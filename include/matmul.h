@@ -17,6 +17,7 @@ namespace matmul
 		enum IMP_TYPE
 		{
 			NATIVE,
+			REORDER,
 			UNROLL,
 		};
 		void native_matmul(const struct matmul_params *params);

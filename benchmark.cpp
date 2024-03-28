@@ -45,6 +45,12 @@ void initialize_matrix(float A[], int size)
 
 using namespace matmul;
 
+bool runSwitch(std::string target, std::string type){
+    if (target == "ALL" || target == type)
+        return true;
+    return false;
+}
+
 int main(int argc, char* argv[])
 {
     auto target = "ALL";
@@ -68,6 +74,14 @@ int main(int argc, char* argv[])
     //Baseline
     params.C.data_ptr = native_C;
     matmul_op.evaluate(MatmulOperator::NATIVE, &params);
+
+    params.C.data_ptr = output_C;
+    // reordering
+    if (runSwitch(target, "loop_reodering")){
+        matmul_op.evaluate(MatmulOperator::REORDER, &params);
+        if (!check_identical(native_C, output_C, C_ROW * C_COLUMN))
+            printf("incorrect output of mat_mul_reordering\n");
+    }
 
     return 0;
 }

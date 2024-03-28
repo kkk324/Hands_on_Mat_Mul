@@ -51,9 +51,11 @@ namespace matmul
             {
                 float acc = 0;
                 for (k = 0; k < A->column; k++)
-                    acc += data_A[i * A->column + k] * data_B[k + j*B->row];
+                    acc += data_A[i * A->column + k] * data_B[k * B->column + j]; 
+				   //data_B[k + j*B->row] is wrong! 
 				data_C[i*C->column+j] = acc;
             }
+
 
 	}
 
@@ -77,7 +79,13 @@ namespace matmul
             for (int i = 0; i < RUNS; i++)
                 this->native_matmul(params);
             break;
+		case REORDER:
+            function_name = "mat_mul_reordering";
+            for (int i = 0; i < RUNS; i++)
+                this->mat_mul_reordering(params);
+            break;
 		}
+
 		gettimeofday(&end, NULL);
         ms = interval_to_ms(&start, &end);
         std::cout << function_name << ": " << ms << " ms" << std::endl;
