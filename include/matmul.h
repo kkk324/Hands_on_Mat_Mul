@@ -20,6 +20,7 @@ namespace matmul
 			UNROLL,
 		};
 		void native_matmul(const struct matmul_params *params);
+		void mat_mul_reordering(const struct matmul_params *params);
 		void evaluate(IMP_TYPE type, const struct matmul_params *params);
 	private:
 		void CHECK_MAT(const struct matrix *A, const struct matrix *B, const struct matrix *C);
